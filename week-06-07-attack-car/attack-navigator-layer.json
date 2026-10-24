@@ -1,0 +1,72 @@
+{
+  "name": "Week 6 - PowerShell hunt mapping",
+  "versions": {
+    "attack": "19",
+    "navigator": "5.1.0",
+    "layer": "4.5"
+  },
+  "domain": "enterprise-attack",
+  "description": "Techniques observed in the T1059.001 simulation (red) and in the hypothesis only (yellow).",
+  "sorting": 0,
+  "layout": {
+    "layout": "side",
+    "showName": true,
+    "showID": true
+  },
+  "hideDisabled": false,
+  "techniques": [
+    {
+      "techniqueID": "T1059.001",
+      "tactic": "execution",
+      "color": "#e60d0d",
+      "comment": "PowerShell: all simulated commands",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1027.010",
+      "tactic": "stealth",
+      "color": "#e60d0d",
+      "comment": "Encoded command (-EncodedCommand)",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1564.003",
+      "tactic": "stealth",
+      "color": "#e60d0d",
+      "comment": "Hidden window (-WindowStyle Hidden)",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1105",
+      "tactic": "command-and-control",
+      "color": "#e60d0d",
+      "comment": "DownloadString cradle",
+      "enabled": true
+    },
+    {
+      "techniqueID": "T1566",
+      "tactic": "initial-access",
+      "color": "#ffe766",
+      "comment": "Hypothesis only, not simulated",
+      "enabled": true
+    }
+  ],
+  "gradient": {
+    "colors": [
+      "#ffffff",
+      "#e60d0d"
+    ],
+    "minValue": 0,
+    "maxValue": 100
+  },
+  "legendItems": [
+    {
+      "label": "Observed in simulation",
+      "color": "#e60d0d"
+    },
+    {
+      "label": "Hypothesis only",
+      "color": "#ffe766"
+    }
+  ]
+}
