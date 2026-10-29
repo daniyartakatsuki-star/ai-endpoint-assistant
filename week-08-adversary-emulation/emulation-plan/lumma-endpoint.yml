@@ -1,0 +1,24 @@
+---
+# CALDERA adversary profile — Week 8 emulation plan
+# Threat modeled: LummaC2 infostealer on a personal endpoint (FBI/CISA AA25-141B).
+# Scoped to the three phases the syllabus names: initial access -> persistence -> exfiltration,
+# with execution and collection in between. Drop this file in CALDERA's
+# data/adversaries/ and the ability files in data/abilities/<tactic>/.
+#
+# Every ability is HARMLESS: localhost-only, decoy data, benign markers, and each
+# has a cleanup stanza so a run leaves nothing behind.
+
+id: c8161e04-a995-49db-9adc-a6f6b3e9c055
+name: Lumma-style Endpoint Infostealer (lab-safe)
+description: >
+  Lab-safe emulation of the LummaC2 kill chain against a single personal
+  endpoint. Reproduces the shape of AA25-141B TTPs (encoded PowerShell,
+  Run-key persistence, browser-data collection, HTTP exfiltration) with
+  harmless stand-ins so detection coverage can be measured. Initial access
+  (T1204.004 ClickFix) is operator-driven and documented, not automated.
+objective: 24ef179b-b1b1-4913-8d48-53640be5bf97
+atomic_ordering:
+  - e4be3221-9918-44c3-abc1-2cfdbe03a552   # A2 execution: encoded PowerShell
+  - 813c8c19-a0fe-47dc-a4a9-5f245e8f0734   # A3 persistence: Run key
+  - ed97de1a-10ee-424f-aa50-7613e1fcc103   # A4 collection: archive decoy "browser data"
+  - 5af67cec-8f0b-4ef7-b478-57beca0411df   # A5 exfiltration: HTTP POST to local C2

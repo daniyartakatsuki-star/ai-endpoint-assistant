@@ -1,0 +1,20 @@
+---
+# A4 — Collection: archive decoy "browser/wallet" data into one file
+- id: ed97de1a-10ee-424f-aa50-7613e1fcc103
+  name: Collect and stage decoy browser data (lab-safe)
+  description: Compresses a folder of empty decoy files into loot.zip, mimicking LummaC2 gathering browser profiles and wallet data. No real user data is touched.
+  tactic: collection
+  technique:
+    attack_id: T1119
+    name: "Automated Collection"
+  executors:
+    - platform: windows
+      name: psh
+      command: |
+        New-Item -ItemType Directory -Force C:\attack-test\decoy | Out-Null
+        'decoy' | Set-Content C:\attack-test\decoy\logins.txt
+        'decoy' | Set-Content C:\attack-test\decoy\wallet.dat
+        Compress-Archive -Path C:\attack-test\decoy\* -DestinationPath C:\attack-test\loot.zip -Force
+      cleanup: |
+        Remove-Item C:\attack-test\loot.zip -ErrorAction SilentlyContinue
+  # Related: T1217 (Browser Information Discovery) for the real technique being imitated.

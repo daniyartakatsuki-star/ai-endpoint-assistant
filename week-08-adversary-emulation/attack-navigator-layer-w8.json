@@ -1,0 +1,29 @@
+{
+  "name": "Week 8 - Lumma emulation plan (CALDERA/Atomic)",
+  "versions": { "attack": "19", "navigator": "5.1.0", "layer": "4.5" },
+  "domain": "enterprise-attack",
+  "description": "Week 8 adversary-emulation plan for a personal endpoint (LummaC2 / AA25-141B), authored as a CALDERA profile and Atomic Red Team tests. Color = detection coverage by the existing Week 5/7 rule: green = alerts, orange = emulated but blind/not caught (gap), yellow = planned/operator-driven.",
+  "sorting": 0,
+  "layout": { "layout": "side", "showName": true, "showID": true },
+  "hideDisabled": false,
+  "techniques": [
+    { "techniqueID": "T1566", "tactic": "initial-access", "color": "#ffe766", "comment": "A1 phishing lure (operator-driven, documented)", "enabled": true },
+    { "techniqueID": "T1204.004", "tactic": "execution", "color": "#ffe766", "comment": "A1 ClickFix / paste-into-Run (operator-driven)", "enabled": true },
+    { "techniqueID": "T1059.001", "tactic": "execution", "color": "#63c663", "comment": "A2 encoded PowerShell - ALERTS (rule + Splunk)", "enabled": true },
+    { "techniqueID": "T1027.010", "tactic": "stealth", "color": "#63c663", "comment": "A2 -EncodedCommand - ALERTS", "enabled": true },
+    { "techniqueID": "T1547.001", "tactic": "persistence", "color": "#e67e22", "comment": "A3 Run key via reg.exe - BLIND (rule only reads powershell.exe)", "enabled": true },
+    { "techniqueID": "T1119", "tactic": "collection", "color": "#e67e22", "comment": "A4 archive decoy browser/wallet data - not caught", "enabled": true },
+    { "techniqueID": "T1217", "tactic": "discovery", "color": "#e67e22", "comment": "A4 browser info discovery (real technique) - not caught", "enabled": true },
+    { "techniqueID": "T1041", "tactic": "exfiltration", "color": "#e67e22", "comment": "A5 HTTP POST to C2 - not caught (needs network telemetry)", "enabled": true },
+    { "techniqueID": "T1071.001", "tactic": "command-and-control", "color": "#e67e22", "comment": "A5 web-protocol channel - not caught", "enabled": true }
+  ],
+  "gradient": { "colors": ["#ffffff", "#e60d0d"], "minValue": 0, "maxValue": 100 },
+  "legendItems": [
+    { "label": "Alerts today (Week 5 rule + Week 7 Splunk)", "color": "#63c663" },
+    { "label": "Emulated but not caught (detection gap)", "color": "#e67e22" },
+    { "label": "Planned / operator-driven", "color": "#ffe766" }
+  ],
+  "showTacticRowBackground": true,
+  "tacticRowBackground": "#dddddd",
+  "selectTechniquesAcrossTactics": true
+}

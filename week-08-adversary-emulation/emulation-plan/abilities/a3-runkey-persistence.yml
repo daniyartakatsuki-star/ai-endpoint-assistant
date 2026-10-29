@@ -1,0 +1,18 @@
+---
+# A3 — Persistence: HKCU Run key (the syllabus-required persistence phase)
+# Identical to Atomic Red Team T1547.001 Test #1 "Reg Key Run", pointed at a
+# harmless marker path instead of a real payload. Full cleanup included.
+- id: 813c8c19-a0fe-47dc-a4a9-5f245e8f0734
+  name: Registry Run Key persistence (lab-safe)
+  description: Adds an HKCU Run value so a marker "payload" would launch at logon, mirroring how LummaC2-style loaders survive reboot. Removed by the cleanup stanza.
+  tactic: persistence
+  technique:
+    attack_id: T1547.001
+    name: "Boot or Logon Autostart Execution: Registry Run Keys / Startup Folder"
+  executors:
+    - platform: windows
+      name: cmd
+      command: |
+        reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "W8EmulationMarker" /t REG_SZ /F /D "C:\attack-test\stage2.ps1"
+      cleanup: |
+        reg delete "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /V "W8EmulationMarker" /f
