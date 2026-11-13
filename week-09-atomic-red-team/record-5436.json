@@ -1,0 +1,50 @@
+{
+  "@timestamp": [
+    "2026-11-11T12:09:34.978Z"
+  ],
+  "host.name": [
+    "win"
+  ],
+  "host.os.name": [
+    "Windows 11 Enterprise Evaluation"
+  ],
+  "host.os.build": [
+    "26300.9457"
+  ],
+  "agent.version": [
+    "9.5.6"
+  ],
+  "event.provider": [
+    "Microsoft-Windows-Sysmon"
+  ],
+  "event.code": [
+    "1"
+  ],
+  "winlog.channel": [
+    "Microsoft-Windows-Sysmon/Operational"
+  ],
+  "winlog.record_id": [
+    "5436"
+  ],
+  "process.entity_id": [
+    "{87b8d6e7-5afe-6af4-5202-000000000c00}"
+  ],
+  "process.pid": [
+    10872
+  ],
+  "process.executable": [
+    "C:\\Windows\\System32\\makecab.exe"
+  ],
+  "process.command_line": [
+    "makecab.exe  C:\\AITU-W9\\W9-20261111-120716\\browser-decoy.txt C:\\AITU-W9\\W9-20261111-120716\\browser-decoy.cab"
+  ],
+  "process.parent.name": [
+    "cmd.exe"
+  ],
+  "process.parent.pid": [
+    5892
+  ],
+  "event.ingested": [
+    "2026-11-11T12:09:45.348Z"
+  ]
+}

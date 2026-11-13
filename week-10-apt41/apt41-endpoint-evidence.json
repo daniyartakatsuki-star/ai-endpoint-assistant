@@ -1,0 +1,115 @@
+{
+	"name": "AI Endpoint Assistant — APT41 evidence comparison",
+	"versions": {
+		"attack": "20",
+		"navigator": "5.3.2",
+		"layer": "4.5"
+	},
+	"domain": "enterprise-attack",
+	"description": "",
+	"filters": {
+		"platforms": [
+			"Windows",
+			"IaaS",
+			"Linux",
+			"macOS",
+			"SaaS",
+			"ESXi",
+			"Network Devices",
+			"PRE",
+			"Containers",
+			"Office Suite",
+			"Identity Provider"
+		]
+	},
+	"sorting": 0,
+	"layout": {
+		"layout": "side",
+		"aggregateFunction": "average",
+		"showID": false,
+		"showName": true,
+		"showAggregateScores": false,
+		"countUnscored": false,
+		"expandedSubtechniques": "none"
+	},
+	"hideDisabled": false,
+	"techniques": [
+		{
+			"techniqueID": "T1560",
+			"tactic": "collection",
+			"color": "",
+			"comment": "",
+			"enabled": true,
+			"metadata": [],
+			"links": [],
+			"showSubtechniques": true
+		},
+		{
+			"techniqueID": "T1560.001",
+			"tactic": "collection",
+			"color": "#31a354",
+			"comment": "During run W9-20261111-120716 on host win, Sysmon Event ID 1 (record 5436) showed cmd.exe launching makecab.exe at 12:09:34.978 UTC on November 11, 2026. The command specified browser-decoy.txt as input and C:\\AITU-W9\\W9-20261111-120716\\browser-decoy.cab as the destination. Searches of Kibana and the local Sysmon log returned no matching Event ID 11 for the CAB.",
+			"enabled": true,
+			"metadata": [],
+			"links": [],
+			"showSubtechniques": false
+		},
+		{
+			"techniqueID": "T1049",
+			"tactic": "discovery",
+			"color": "#3182bd",
+			"comment": "APT41 used netstat during network reconnaissance to identify IP addresses of network resources.",
+			"enabled": true,
+			"metadata": [],
+			"links": [],
+			"showSubtechniques": false
+		},
+		{
+			"techniqueID": "T1102",
+			"tactic": "command-and-control",
+			"color": "",
+			"comment": "",
+			"enabled": true,
+			"metadata": [],
+			"links": [],
+			"showSubtechniques": true
+		},
+		{
+			"techniqueID": "T1102.001",
+			"tactic": "command-and-control",
+			"color": "#3182bd",
+			"comment": "APT41 used legitimate web services, including GitHub and Pastebin, to publish information that its malware could use to locate command-and-control infrastructure.",
+			"enabled": true,
+			"metadata": [],
+			"links": [],
+			"showSubtechniques": false
+		}
+	],
+	"gradient": {
+		"colors": [
+			"#ff6666ff",
+			"#ffe766ff",
+			"#8ec843ff",
+			"#8ec843ff"
+		],
+		"minValue": 0,
+		"maxValue": 100
+	},
+	"legendItems": [
+		{
+			"label": "Documented for APT41 and observed in our lab",
+			"color": "#31a354"
+		},
+		{
+			"label": "Documented for APT41, case study only",
+			"color": "#3182bd"
+		}
+	],
+	"metadata": [],
+	"links": [],
+	"showTacticRowBackground": false,
+	"tacticRowBackground": "#0000000",
+	"selectTechniquesAcrossTactics": true,
+	"selectSubtechniquesWithParent": false,
+	"selectVisibleTechniques": false
+}
