@@ -1,39 +1,40 @@
-# Project Overview
-## Local AI-Powered Cybersecurity Assistant for Personal Endpoints
+# Project overview
 
-**Topic:** Monitoring suspicious local system processes and detecting phishing URLs in real time for non-technical users.
+**Local AI-Powered Cybersecurity Assistant for Personal Endpoints** is a ten-week investigation into how a personal computer can explain suspicious links and processes to a non-technical user. The group built two small prototypes and used controlled experiments to test what a warning could reasonably say. A recurring question was how much evidence a single signal provides: a domain match, a PowerShell flag and an archive command each tell a different part of the story.
 
-This document explains what was produced for Weeks 1–5 of the assignment and how the pieces fit together. The detailed work for each week lives in its own folder/file, as required.
+## From threat intelligence to a URL verdict · Weeks 1–4
 
----
+The group selected phishing links and suspicious local processes as the two detection priorities. It examined 11,055 observations in the UCI Phishing Websites dataset and compared findings from VirusTotal, Shodan and Maltego. Conflicting findings for a domain illustrated why a URL verdict should explain which indicator contributed to it. [Week 1 scope](week-01-cti-fundamentals/week1-work.md) · [Week 2 collection and evidence](week-02-data-collection/week2-work.md)
 
-## What Was Produced
+For a working prototype, the Week 3 pipeline filtered 14,428 URLhaus records to 1,752 records by status and deduplicated them into 729 domains. The URL checker reads this snapshot, checks for a domain match, and scores features such as unusual length and repeated hyphens. URLhaus supplies malware-distribution indicators; a match signals known malicious hosting but cannot establish that a particular page steals credentials. The Mirai-related tags in the feed also motivated the Week 4 study of the 2016 Dyn attack. [Normalization script](week-03-data-processing/filter_normalize_iocs.py) · [URL checker](week-03-data-processing/simple_url_check.py) · [Mirai case study](week-04-kill-chain/week4-work.md)
 
-| Week | Folder / File | What it covers |
+## From a PowerShell hunt to an alert · Weeks 5–7
+
+Sysmon supplied Windows process-creation records and Splunk made them searchable. A legitimate VS Code update shared command-line flags with the simulated suspicious activity. The group adjusted its rule so a hidden window alone would not trigger a warning. The implementation also considers encoded commands, execution keywords and the program that launched PowerShell. Its ten checks cover both deliberate test cases and benign examples. [Week 5 hunt](week-05-threat-hunting/week5-work.md) · [Rule and test cases](week-05-threat-hunting/powershell_rule.py)
+
+Week 6 mapped the tested procedures to ATT&CK. Week 7 adapted MITRE CAR-2014-04-003, *PowerShell Execution*, to the lab's Sysmon fields. The broad search returned 92 PowerShell starts. The tuned search returned 12 events, all associated with deliberate test commands in that dataset. The group saved the search as a scheduled Splunk alert. Those counts describe this lab sample; they do not estimate detection accuracy on other endpoints. [Combined Week 6–7 report](week-06-07-attack-car/week6-7-work.md) · [Navigator layer](week-06-07-attack-car/attack-navigator-layer.json)
+
+## Testing an operation outside the PowerShell rule · Weeks 8–9
+
+Week 8 expressed a Lumma-inspired endpoint scenario as CALDERA YAML abilities and an Atomic Red Team plan. The coverage script compared the plan with the existing rule. One collection ability packaged decoy browser and wallet files into a ZIP with PowerShell. Week 9 isolated that archiving step and changed the utility to Windows Cabinet Maker. This gave the group a concrete question: can the assistant identify the archive writer when the child process is a native Windows executable? [Week 8 plan and coverage](week-08-adversary-emulation/week8-work.md) · [Decoy collection ability](week-08-adversary-emulation/emulation-plan/abilities/a4-browser-collection.yml)
+
+The group executed Atomic Red Team T1560.001 test 11 on Windows 11 Enterprise Evaluation VM `win`. Sysmon64 15.22 and Winlogbeat 9.5.6 supplied events to Elasticsearch and Kibana 9.5.6 on Ubuntu 26.04.1 LTS VM `askhat`. Two executions answered different questions:
+
+| Run | Question | Finding |
 |---|---|---|
-| 1 | `week-01-cti-fundamentals/week1-work.md` | Glossary of CTI terms scoped to our project, classification of threats relevant to personal endpoints, and how the ENISA Threat Landscape reading shaped our MVP scope (phishing URLs + suspicious processes). |
-| 2 | `week-02-data-collection/week2-work.md` + `images/` | A real dataset (UCI Phishing Websites, 11,055 rows) explored and correlated to rank real threat indicators, OSINT tool validation on safe baselines (VirusTotal, Shodan, Maltego), a real-world investigation of a currently flagged phishing domain, a data-source mapping, and findings answering three research questions — all backed by 8 real screenshots as evidence. |
-| 3 | `week-03-data-processing/week3-work.md` + `filter_normalize_iocs.py` + `simple_url_check.py` | A live IOC feed (URLhaus) pulled directly via Python (in place of a full MISP deployment), then filtered (14,428 → 1,752 by status), normalized into a common schema, deduplicated (→ 729 unique domains), and correlated (tag frequency + a cross-check against Week 2's flagged domain) — with the output consumed directly by `simple_url_check.py`, so the pipeline is genuinely connected end-to-end. |
-| 4 | `week-04-kill-chain/week4-work.md` + `images/` | The Mirai IoT botnet / 2016 Dyn DDoS attack analyzed stage-by-stage through the Lockheed Martin Kill Chain, each stage mapped to a MITRE ATT&CK technique, with a diagram — the attack was chosen because it matched the dominant threat tags (`mirai`/`Mozi`) found in Week 3's own live feed data, not picked arbitrarily. |
-| 5 | `week-05-threat-hunting/week5-work.md` + `powershell_rule.py` + `images/` (10 screenshots) | Splunk Enterprise deployed locally with Sysmon as the telemetry source (8,580 real events ingested), a hypothesis-driven hunt for suspicious PowerShell activity (T1059.001) run as three real SPL queries against that data, a genuine false-positive pattern discovered (legitimate VS Code updates share attacker-favored flags), and the finding converted into a detection rule (`powershell_rule.py`) validated 10/10 against real hunt data plus synthetic edge cases. |
+| `W9-20261111-113436` | What did the archive contain? | Makecab exited successfully. Windows reported a 157-byte CAB, and `expand.exe -D` listed `browser-decoy.txt`. |
+| `W9-20261111-120716` | What did the SIEM capture? | Sysmon Event ID 1, record 5436, showed `cmd.exe` launching `makecab.exe` with both paths. Searches in Kibana and the local Windows log returned no matching Event ID 11 for the CAB. |
 
-Each week's file ends with a **Deliverables Checklist** matching the exact tasks listed in the syllabus table (Section 3.3), so the practice teacher can quickly verify coverage.
+For the second run, an assistant could accurately say, “Command Prompt started Cabinet Maker and supplied browser-decoy.txt as input and browser-decoy.cab as the destination.” Confirming a completed write for that run would require more evidence. The experiment demonstrated a manual Elastic investigation; the earlier automatic alert belonged to the PowerShell work in Splunk. [Week 9 screenshots and method](week-09-atomic-red-team/week9-work.md) · [Selected fields from record 5436](week-09-atomic-red-team/record-5436.json)
 
-## Why This Scope
+## Comparing the evidence with APT41 · Week 10
 
-Personal-endpoint users face a narrower, higher-frequency threat set than enterprises — mainly phishing links and unwanted/malicious local processes — so we deliberately scoped the MVP around those two detection surfaces rather than trying to cover the full enterprise CTI threat landscape. Each week's reading was used to justify a concrete design decision:
+APT41 provided a documented example of the same archiving utility. The group mapped three published procedures in ATT&CK Navigator and used color to distinguish the one reproduced locally. The comparison identifies a shared behavior. The group was the known operator of the lab endpoint.
 
-- **Week 1 (ENISA):** confirmed phishing + malware are the top threats to individuals → chose them as the two MVP pillars.
-- **Week 2 (Bazzell):** shaped the OSINT methodology — validate tools on safe baselines before trusting them on a real target, and never rely on a single source; this was directly confirmed by a real case where VirusTotal and domain age both said "safe" while a community abuse feed said otherwise.
-- **Week 3 (MISP Training Documentation):** informed the IOC schema (type, value, source, confidence, tags) our filtering/normalization pipeline uses, even though we substituted a full MISP deployment with a simpler, equally real direct feed pull — see `week3-work.md §3.1` for why.
-- **Week 4 (Lockheed Martin Intelligence-Driven Defense):** its "break any single link" principle explains why the assistant prioritizes catching attacker behavior at the earliest observable stage (a suspicious URL before it's clicked) rather than only reacting after the fact.
-- **Week 5 (Microsoft Threat Hunting Guide, Smith's Practical Threat Hunting):** both stress that a hunt's value comes from feeding the finding back into automated detection — which is why the real false positive uncovered in the Splunk hunt (VS Code's update flags overlapping attacker tradecraft) was carried directly into `powershell_rule.py`'s logic (a hidden window alone is deliberately not flagged) rather than left as a one-off observation.
+| Technique | Evidence and relevance to the assistant |
+|---|---|
+| T1560.001 · Archive via Utility | Green. Makecab archiving appears in both the published case and the controlled Windows experiment. |
+| T1049 · System Network Connections Discovery | Blue. Published APT41 use of `netstat` illustrates why a process warning needs the parent and surrounding activity. |
+| T1102.001 · Dead Drop Resolver | Blue. Published APT41 use of legitimate web services illustrates why a domain's reputation alone cannot establish how its content was used. |
 
-## AI Usage Disclosure
-
-We used Claude (Anthropic) as an AI assistant during this project, as permitted by the assignment. Scope of use:
-
-- **Ours:** the project idea (local AI-powered cybersecurity assistant for personal endpoints), the CTI research and threat-classification decisions, the dataset selection and correlation analysis, the real OSINT investigation and its findings, the decision to substitute a full MISP deployment with a direct feed pull, the Kill Chain/ATT&CK attack analysis, the Splunk/Sysmon lab deployment and threat-hunting hypothesis, and the core logic and research behind `filter_normalize_iocs.py`, `simple_url_check.py`, and `powershell_rule.py`.
-- **Claude's role:** sorting and documenting that work into structured weekly deliverables (checklists, the data-source mapping, diagrams, this overview), and helping refine and document the filtering/normalization, URL-checking, and threat-hunting logic.
-
-No AI-generated content replaced our own research or decision-making — Claude was used as a documentation and formatting aid.
+The repository's demonstrated components are the URL scorer, the PowerShell rule, the saved lab evidence and the ATT&CK layers. A unified assistant that continuously collects events and generates explanations remains a project goal. [Week 10 analysis and sources](week-10-apt41/week10-work.md) · [Exported Navigator layer](week-10-apt41/apt41-endpoint-evidence.json)

@@ -37,4 +37,6 @@ The colored cells describe the source of evidence. A shared executable is enough
 | 4:30–6:30 | Open the layer. Explain all three procedures and why only the archiving technique is green. |
 | 6:30–7:30 | Give the endpoint-user explanation. Identify what further evidence would establish a completed write or transfer for the second run. |
 
-**Documentation credit.** The group supplied the experiment screenshots, event export and Navigator layer. ChatGPT assisted with the practical guide, evidence interpretation and preparation of the Week 9–10 reports.
+## AI Usage Disclosure
+
+We used **ChatGPT (OpenAI)** to help compare the documented APT41 procedures with our Week 9 evidence, draft the three technique comments, and prepare the report and defense outline. We built and exported the Navigator layer and captured its screenshot. The green entry draws on our Windows experiment; the two blue entries draw on the cited threat reporting.

@@ -105,3 +105,7 @@ expand.exe -D $cab
 Capture the archive listing and process event. For cleanup, use `Invoke-AtomicTest @test -Cleanup`, check `Test-Path -LiteralPath $cab`, then remove the synthetic source with `Remove-Item -LiteralPath $src`.
 
 [Official Atomic test definition](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1560.001/T1560.001.yaml) · [Microsoft Sysmon event reference](https://learn.microsoft.com/sysinternals/downloads/sysmon)
+
+## AI Usage Disclosure
+
+We used **ChatGPT (OpenAI)** to help select the Makecab atomic, draft the PowerShell steps and Kibana queries, troubleshoot module loading, and interpret the missing Event ID 11. We ran the experiment on our VMs, checked the CAB contents, searched the local and forwarded logs, and supplied the screenshots and event export. ChatGPT helped organize those results into this report and distinguish the evidence from the two runs.

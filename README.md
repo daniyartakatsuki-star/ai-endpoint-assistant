@@ -1,64 +1,34 @@
 # Local AI-Powered Cybersecurity Assistant for Personal Endpoints
 
-Monitoring suspicious local system processes and detecting phishing URLs in real time for non-technical users.
+This Astana IT University project investigates two questions a personal computer user might ask: “Why should I be cautious about this link?” and “What did this program do on my computer?” The repository contains a Python URL checker, a PowerShell detection rule, and ten weeks of threat-intelligence research and endpoint experiments. The two prototypes run independently. Their current decisions come from feed matches and explicit rules.
 
-## Overview
+## Try the prototypes
 
-See [`PROJECT-OVERVIEW.md`](./PROJECT-OVERVIEW.md) for the full write-up of what was researched and produced, and why the project was scoped the way it was.
+Run these commands from the repository root with Python 3. Both examples use the standard library and work offline with the committed data.
 
-## Repository Structure
-
-```
-ai-endpoint-assistant/
-├── README.md
-├── PROJECT-OVERVIEW.md
-├── week-01-cti-fundamentals/
-│   └── week1-work.md
-├── week-02-data-collection/
-│   ├── week2-work.md
-│   └── images/
-│       ├── feature-correlation-chart.png
-│       ├── maltego-graph.png
-│       ├── shodan-cyberreliant-general.png
-│       ├── shodan-cyberreliant-ports.png
-│       ├── shodan-ip-185.15.58.224.jpg
-│       ├── virustotal-eicar-hash.jpg
-│       ├── virustotal-timestampasa-domain.png
-│       └── virustotal-url-testsafebrowsing.jpg
-├── week-03-data-processing/
-│   ├── week3-work.md
-│   ├── filter_normalize_iocs.py
-│   ├── iocs_normalized.json
-│   └── simple_url_check.py
-├── week-04-kill-chain/
-│   ├── week4-work.md
-│   └── images/
-│       └── kill-chain-mirai-diagram.png
-├── week-05-threat-hunting/
-│   ├── week5-work.md
-│   ├── powershell_rule.py
-│   └── images/
-│       ├── 01-splunk-home.png
-│       ├── 02-sysmon-installed.png
-│       ├── 03-sysmon-eventviewer.png
-│       ├── 04-index-created.png
-│       ├── 05-data-arriving.png
-│       ├── 06-raw-sysmon-event.png
-│       ├── 07-test-commands.png
-│       ├── 08-query1-encoded-powershell.png
-│       ├── 09-query2-parent.png
-│       └── 10-query3-rare.png
-└── .gitignore
+```sh
+(cd week-03-data-processing && python3 simple_url_check.py)
+python3 week-05-threat-hunting/powershell_rule.py
 ```
 
-## Progress Log
+The URL checker reads its JSON file from the working directory. Running it inside the Week 3 folder loads the 729-domain snapshot and prints example verdicts. The PowerShell rule runs ten cases and prints the reasons for each decision. A legitimate VS Code update is one of the controls.
 
-- **Week 1:** CTI glossary and threat classification completed. See [`week-01-cti-fundamentals/week1-work.md`](./week-01-cti-fundamentals/week1-work.md).
-- **Week 2:** Real dataset (UCI Phishing Websites) explored and correlated, OSINT tools (VirusTotal/Shodan/Maltego) validated and applied to a real flagged domain, data-source mapping produced. See [`week-02-data-collection/week2-work.md`](./week-02-data-collection/week2-work.md).
-- **Week 3:** Live IOC feed (URLhaus) filtered, normalized, and deduplicated (14,428 → 729 domains) via `filter_normalize_iocs.py`, consumed by `simple_url_check.py` for real-time URL scoring. See [`week-03-data-processing/week3-work.md`](./week-03-data-processing/week3-work.md).
-- **Week 4:** Mirai botnet / 2016 Dyn DDoS attack analyzed through the Lockheed Martin Kill Chain, each stage mapped to a MITRE ATT&CK technique — attack chosen because it matched the dominant threat tags from Week 3's own data. See [`week-04-kill-chain/week4-work.md`](./week-04-kill-chain/week4-work.md).
-- **Week 5:** Splunk + Sysmon deployed locally (8,580 real events ingested), hypothesis-driven hunt for suspicious PowerShell activity run as three real SPL queries, with a genuine false-positive finding (VS Code updates) feeding into a detection rule (`powershell_rule.py`, validated 10/10 on real + synthetic cases). See [`week-05-threat-hunting/week5-work.md`](./week-05-threat-hunting/week5-work.md).
+## Weekly reports
 
-## AI Usage Disclosure
+| Week | Report | What to look for |
+|---|---|---|
+| 1 | [Threat intelligence fundamentals](week-01-cti-fundamentals/week1-work.md) | Why the project focuses on suspicious links and local processes |
+| 2 | [Data collection](week-02-data-collection/week2-work.md) | Phishing dataset analysis and cross-checks using OSINT tools |
+| 3 | [Indicator processing](week-03-data-processing/week3-work.md) | URLhaus records transformed into the domain list used by the checker |
+| 4 | [Cyber Kill Chain](week-04-kill-chain/week4-work.md) | Mirai case study prompted by tags in the feed |
+| 5 | [Threat hunting](week-05-threat-hunting/week5-work.md) | Sysmon process records, Splunk searches and a tested PowerShell rule |
+| 6–7 | [ATT&CK mapping and MITRE CAR](week-06-07-attack-car/week6-7-work.md) | PowerShell procedures mapped to ATT&CK and a tuned Splunk alert |
+| 8 | [Adversary emulation plan](week-08-adversary-emulation/week8-work.md) | CALDERA ability files, an Atomic Red Team plan and detection coverage |
+| 9 | [Windows archive investigation](week-09-atomic-red-team/week9-work.md) | A verified 157-byte CAB and the limits of file-event visibility |
+| 10 | [APT41 case study](week-10-apt41/week10-work.md) | A Navigator layer comparing lab evidence with three published procedures |
 
-We used Claude (Anthropic) as an AI assistant during this project. The project idea, research, dataset analysis, OSINT investigation, attack analysis, Splunk/Sysmon lab setup, and core logic (including `filter_normalize_iocs.py`, `simple_url_check.py`, and `powershell_rule.py`) are our own; Claude was used to sort and document the weekly work and to help refine and document the filtering/normalization, URL-checking, and threat-hunting logic.
+The [project overview](PROJECT-OVERVIEW.md) explains how the experiments connect, what the group verified and which conclusions the evidence supports.
+
+## AI usage
+
+Earlier project documentation credits Claude (Anthropic) with assistance in organizing reports and developing scripts and emulation materials. The group used ChatGPT (OpenAI) for the Week 9 lab guide, troubleshooting and evidence analysis, and for the Week 10 mapping and documentation. Each of those reports ends with a description of the group's work and the assistance it received.
