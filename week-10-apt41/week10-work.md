@@ -27,16 +27,6 @@ Open the [exported layer](apt41-endpoint-evidence.json) in [ATT&CK Navigator](ht
 
 The colored cells describe the source of evidence. A shared executable is enough to compare procedures, but it does not identify the operator. In this case, the known lab operator and synthetic input let us evaluate what an assistant can explain without inferring malicious intent.
 
-## Group defense plan · 7 minutes 30 seconds
-
-| Time | What to show and explain |
-|---|---|
-| 0:00–0:45 | Open Week 8 A4. Explain why testing a second archiving utility is relevant to monitoring local processes. |
-| 0:45–2:15 | Show Week 9 figures 1 and 2. Point out the test GUID, decoy input, exit code, 157-byte CAB and verified member. |
-| 2:15–4:30 | Show figures 3–6. Distinguish the two run IDs. Explain how record 5436 establishes the parent and paths, and how the two file-event searches limit the conclusion. |
-| 4:30–6:30 | Open the layer. Explain all three procedures and why only the archiving technique is green. |
-| 6:30–7:30 | Give the endpoint-user explanation. Identify what further evidence would establish a completed write or transfer for the second run. |
-
 ## AI Usage Disclosure
 
-We used **ChatGPT (OpenAI)** to help compare the documented APT41 procedures with our Week 9 evidence, draft the three technique comments, and prepare the report and defense outline. We built and exported the Navigator layer and captured its screenshot. The green entry draws on our Windows experiment; the two blue entries draw on the cited threat reporting.
+We used **ChatGPT (OpenAI)** to help compare the documented APT41 procedures with our Week 9 evidence, draft the three technique comments, and prepare the report. We built and exported the Navigator layer and captured its screenshot. The green entry draws on our Windows experiment; the two blue entries draw on the cited threat reporting.
